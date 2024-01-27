@@ -59,6 +59,18 @@ const Business = sequelize.define('businesses', {
     },
     asking_price_reasoning:{
         type: DataTypes.TEXT
+    },
+    gstin:{
+        type: DataTypes.STRING,
+    },
+    cin:{
+        type: DataTypes.STRING
+    },
+    pan:{
+        type: DataTypes.STRING
+    },
+    type: {
+        type: DataTypes.ENUM('saas','content','marketplace','ecommerce','other')
     }
 },{timestamps: true})
 

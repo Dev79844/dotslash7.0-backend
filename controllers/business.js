@@ -97,6 +97,20 @@ exports.addBusiness = async(req,res) => {
 exports.getAllBusinesses = async(req,res) => {
     try {
         const businesses = await Business.findAll({
+            attributes: ['businessId','short_desc','ttm_revenue','ttm_profit','asking_price', 'type'],
+        })
+
+        return res.status(200).json(businesses)
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json("Internal Server Error")
+    }
+}
+
+exports.getBusinessDetails = async(req,res) => {
+    try {
+        const {id} = req.params
+        const businesses = await Business.findByPk(id,{
             attributes: ['businessId','short_desc','description','ttm_revenue','ttm_profit','monthly_revenue','monthly_profit','date_found','team_size','business_model','tech_stack','growth_opportunities','reason_for_selling','financing','asking_price','asking_price'],
             include:[
                 {
