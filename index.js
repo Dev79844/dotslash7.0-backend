@@ -3,6 +3,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const sequelize = require('./db/db')
+const userRoutes = require('./routes/user')
 require('dotenv').config()
 
 const app = express()
@@ -23,6 +24,8 @@ app.use(cors({
 app.get("/api/v1/test", (req,res) => {
     res.send("checked!")
 })
+
+app.use("/api/v1",userRoutes)
 
 app.listen(process.env.PORT, () => {
     sequelize.authenticate()
