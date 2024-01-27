@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    user: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test
+    expose:
+      - 5432
+    networks:
+      - godseye
+  server:
+    depends_on:
+        - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DB_NAME=test
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_PORT=5432
+      - PORT=3000
+    ports:
+      - 3000:3000
+    volumes:
+      - type: bind
+        source: ./
+        target: /usr/src/app
+    networks:
+      - godseye
+    command: sh -c "npm run migrate && npm run dev"
+volumes:
+   db-data:
+networks:
+  godseye:
+        
