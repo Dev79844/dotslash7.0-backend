@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const sequelize = require('./db/db')
 const userRoutes = require('./routes/user')
+const businessRoutes = require('./routes/business')
 require('dotenv').config()
 
 const app = express()
@@ -26,6 +27,7 @@ app.get("/api/v1/test", (req,res) => {
 })
 
 app.use("/api/v1",userRoutes)
+app.use("/api/v1",businessRoutes)
 
 app.listen(process.env.PORT, () => {
     sequelize.authenticate()
