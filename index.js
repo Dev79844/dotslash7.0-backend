@@ -2,12 +2,21 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
+const {createServer} = require('http')
+const {Server} = require('socket.io')
 const sequelize = require('./db/db')
 const userRoutes = require('./routes/user')
 const businessRoutes = require('./routes/business')
 require('dotenv').config()
 
 const app = express()
+const httpServer = createServer(app)
+const io = new Server(httpServer,{
+    pingTimeout: 6000,
+    cors:{
+        origin: '*'
+    }
+})
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -29,7 +38,7 @@ app.get("/api/v1/test", (req,res) => {
 app.use("/api/v1",userRoutes)
 app.use("/api/v1",businessRoutes)
 
-app.listen(process.env.PORT, () => {
+httpServer.listen(process.env.PORT, () => {
     sequelize.authenticate()
     .then(() => {
         console.info(`DB connected`);
@@ -39,4 +48,8 @@ app.listen(process.env.PORT, () => {
         console.error(err);
         process.exit(1)
     })
+})
+
+io.on('connection', () => {
+    console.log("connected");
 })

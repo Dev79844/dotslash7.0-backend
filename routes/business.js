@@ -4,7 +4,7 @@ const {isLoggedIn,checkRole} = require('../middleware/auth')
 
 const router = express.Router()
 
-router.route("/businesses").post(isLoggedIn, checkRole('seller'), addBusiness).get(isLoggedIn,getAllBusinesses)
+router.route("/businesses").post(isLoggedIn, checkRole('seller'), addBusiness).get(getAllBusinesses)
 
 router.get("/businesses/:id",isLoggedIn,getBusinessDetails)
 
